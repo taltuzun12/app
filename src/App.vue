@@ -17,29 +17,28 @@
         </tr>
       </tbody>
     </table>
-    <form @submit.prevent="submitData">
-      <label for="column1">Column 1:</label>
-      <input type="text" id="column1" v-model="newData.column1" required>
-      <label for="column2">Column 2:</label>
-      <input type="text" id="column2" v-model="newData.column2" required>
-      <label for="column3">Column 3:</label>
-      <input type="text" id="column3" v-model="newData.column3" required>
-      <button type="submit">Add Row</button>
+    
+    <form @submit.prevent="insertData">
+      <div>
+        <label for="column1">Column 1:</label>
+        <input type="text" id="column1" v-model="newData.column1">
+      </div>
+      <div>
+        <label for="column2">Column 2:</label>
+        <input type="text" id="column2" v-model="newData.column2">
+      </div>
+      <div>
+        <label for="column3">Column 3:</label>
+        <input type="text" id="column3" v-model="newData.column3">
+      </div>
+      <button type="submit">Submit</button>
     </form>
+    
   </div>
 </template>
 <script>
 import axios from 'axios';
 
-const { Pool } = require('pg');
-
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'mydatabase',
-  password: 'mypassword',
-  port: 5432,
-});
 
 export default {
   data() {
@@ -72,7 +71,7 @@ export default {
           console.log(error);
         });
     },
-    submitData() {
+    insertData() {
       axios.post('http://localhost:5000/api/data', this.newData)
         .then(response => {
           console.log(response.data);
@@ -87,20 +86,9 @@ export default {
           console.log(error);
         });
 
-      const { column1, column2, column3 } = this.newData;
 
-      pool.query(
-        'INSERT INTO mytable (column1, column2, column3) VALUES ($1, $2, $3)',
-        [column1, column2, column3],
-        (error, results) => {
-          if (error) {
-            throw error;
-          }
-          console.log(`Data added with ID: ${results.insertId}`);
-        }
-      );
+     
     }
   }
 }
 </script>
-
