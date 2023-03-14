@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 import psycopg2
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 
