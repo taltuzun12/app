@@ -1,10 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import psycopg2
 from flask_cors import CORS
-
-
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+
 CORS(app)
 
 # Set up database connection
@@ -19,13 +19,24 @@ conn = psycopg2.connect(
 # Define a route to get all table data
 @app.route('/api/data')
 def get_data():
-    
     cur = conn.cursor()
     cur.execute("SELECT * FROM your_table1")
     table_data = cur.fetchall()
     cur.close()
     return jsonify(table_data)
 
+# Define a route to insert data into the table
+@app.route('/api/data', methods=['POST'])
+def insert_data():
+    data = request.get_json()
+    id= data['id']
+    name = data['name']
+    age = data['age']
+    cur = conn.cursor()
+    cur.execute(f"INSERT INTO your_table1 (name, age, id) VALUES ('{name}', {age}, {id})")
+    conn.commit()
+    cur.close()
+    return jsonify({'success': True})
 
 if __name__ == '__main__':
     app.run(debug=True)
