@@ -1,8 +1,20 @@
+
+
+#Create Vue project for node- modules
+```
+
+vue create my-app
+
+```
+
+
 # my-app
 
 ## Project setup
 ```
 npm install
+npm install axios
+npm install pg
 ```
 
 ### Compiles and hot-reloads for development
