@@ -14,7 +14,7 @@ vue create my-app
 ```
 npm install
 npm install axios
-npm install pg
+
 ```
 
 ### Compiles and hot-reloads for development
