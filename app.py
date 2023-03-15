@@ -29,14 +29,25 @@ def get_data():
 @app.route('/api/data', methods=['POST'])
 def insert_data():
     data = request.get_json()
-    id= data['id']
+    
+    if 'id' not in data or 'name' not in data or 'age' not in data:
+        return jsonify({'success': False, 'error': 'Missing data'})
+    
+    id = data['id']
     name = data['name']
     age = data['age']
+    
     cur = conn.cursor()
-    cur.execute(f"INSERT INTO your_table1 (name, age, id) VALUES ('{name}', {age}, {id})")
-    conn.commit()
-    cur.close()
-    return jsonify({'success': True})
+    try:
+        cur.execute("INSERT INTO your_table1 (id, name, age) VALUES (%s, %s, %s)", (id, name, age))
+        conn.commit()
+        cur.close()
+        return jsonify({'success': True})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'success': False, 'error': str(e)})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
