@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="table-data">
     <h1>Table Data</h1>
+    
     <table>
       <thead>
         <tr>
@@ -35,10 +36,14 @@
     </form>
     
   </div>
+
+
 </template>
+
 
 <script>
 import axios from 'axios';
+import './TableData.css';
 
 export default {
   data() {
