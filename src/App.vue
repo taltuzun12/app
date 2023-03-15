@@ -4,50 +4,50 @@
     <table>
       <thead>
         <tr>
-          <th>Column 1</th>
-          <th>Column 2</th>
-          <th>Column 3</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in tableData" :key="index">
-          <td>{{ item.column1 }}</td>
-          <td>{{ item.column2 }}</td>
-          <td>{{ item.column3 }}</td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.age }}</td>
         </tr>
       </tbody>
     </table>
-    
+
     <form @submit.prevent="insertData">
       <div>
-        <label for="column1">Column 1:</label>
-        <input type="text" id="column1" v-model="newData.column1">
+        <label for="id">ID:</label>
+        <input type="text" id="id" v-model="newData.id">
       </div>
       <div>
-        <label for="column2">Column 2:</label>
-        <input type="text" id="column2" v-model="newData.column2">
+        <label for="name">Name:</label>
+        <input type="text" id="name" v-model="newData.name">
       </div>
       <div>
-        <label for="column3">Column 3:</label>
-        <input type="text" id="column3" v-model="newData.column3">
+        <label for="age">Age:</label>
+        <input type="text" id="age" v-model="newData.age">
       </div>
       <button type="submit">Submit</button>
     </form>
     
   </div>
 </template>
+
 <script>
 import axios from 'axios';
-
 
 export default {
   data() {
     return {
       tableData: [],
       newData: {
-        column1: '',
-        column2: '',
-        column3: ''
+        id: '',
+        name: '',
+        age: ''
       }
     }
   },
@@ -61,9 +61,9 @@ export default {
           console.log(response.data);
           this.tableData = response.data.map(item => {
             return {
-              column1: item[0],
-              column2: item[1],
-              column3: item[2]
+              id: item[0],
+              name: item[1],
+              age: item[2]
             };
           });
         })
@@ -72,22 +72,27 @@ export default {
         });
     },
     insertData() {
-      axios.post('http://localhost:5000/api/data', this.newData)
+      axios.post('http://localhost:5000/api/data', {
+          id: this.newData.id,
+          name: this.newData.name,
+          age: this.newData.age
+        })
         .then(response => {
           console.log(response.data);
-          this.tableData.push(this.newData);
+          this.tableData.push({
+            id: this.newData.id,
+            name: this.newData.name,
+            age: this.newData.age
+          });
           this.newData = {
-            column1: '',
-            column2: '',
-            column3: ''
+            id: '',
+            name: '',
+            age: ''
           };
         })
         .catch(error => {
           console.log(error);
         });
-
-
-     
     }
   }
 }
